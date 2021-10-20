@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import { Text, StyleSheet, View } from 'react-native'
+import { Text, StyleSheet, View, ActivityIndicator } from 'react-native'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import { auth } from "../firebase/config";
 
 import Home from '../screens/Home'
+import Profile from '../screens/Profile'
 import Login from '../screens/Login'
 import Register from '../screens/Register'
 
@@ -14,9 +15,29 @@ export default class MyDrawer extends Component {
         super();
         this.state = {
             isLoggedIn: false,
+            isLoading: true,
             registered: false,
-            error: ''
+            error: '',
+            user: {}
         }
+    }
+
+    componentDidMount(){
+        auth.onAuthStateChanged(user => {
+            console.log(user);
+            if(user){
+                this.setState({
+                    isLoggedIn: true, 
+                    isLoading: false,
+                    user
+                })
+            } else {
+                this.setState({
+                    isLoggedIn: false, 
+                    isLoading: false,
+                })
+            }
+        })
     }
 
     register(email, pass) {
@@ -43,8 +64,15 @@ export default class MyDrawer extends Component {
             })
     }
 
+    logout() {
+        auth.signOut();
+    }
+
     render() {
         return (
+            this.state.isLoading ? 
+                <ActivityIndicator size="large" color="green" />
+            :
             <Drawer.Navigator>
                 {
                     this.state.isLoggedIn == false ? (
@@ -60,6 +88,10 @@ export default class MyDrawer extends Component {
                     ) : (
                         <>
                             <Drawer.Screen name="Home" component={Home} />
+
+                            <Drawer.Screen name="Profile">
+                                {() => <Profile user={this.state.user} logout={this.logout} />}
+                            </Drawer.Screen>
                         </>
                     )
                 }
