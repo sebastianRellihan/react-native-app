@@ -4,6 +4,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { auth } from "../firebase/config";
 
 import Home from '../screens/Home'
+import NewPost from '../screens/NewPost';
 import Profile from '../screens/Profile'
 import Login from '../screens/Login'
 import Register from '../screens/Register'
@@ -89,6 +90,10 @@ export default class MyDrawer extends Component {
                     ) : (
                         <>
                             <Drawer.Screen name="Home" component={Home} />
+                            
+                            <Drawer.Screen name="NewPost">
+                                {(drawerProps) => <NewPost drawerProps={drawerProps} user={this.state.user} />}
+                            </Drawer.Screen>
 
                             <Drawer.Screen name="Profile">
                                 {() => <Profile user={this.state.user} logout={this.logout} />}
