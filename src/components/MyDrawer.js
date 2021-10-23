@@ -40,12 +40,15 @@ export default class MyDrawer extends Component {
         })
     }
 
-    register(email, pass) {
+    register(email, userName, pass) {
+        console.log(pass);
         auth.createUserWithEmailAndPassword(email, pass)
             .then( res => {
-                console.log("registrado!");
-                // Agregar nombre de usuario al registrar 
+                res.user.updateProfile({
+                    displayName: userName
+                })
             })
+            .then(() => console.log('Usuario registrado exitosamente!'))
             .catch(err => {
                 this.setState({registerError: err})
             })
@@ -80,7 +83,7 @@ export default class MyDrawer extends Component {
                             </Drawer.Screen> 
 
                             <Drawer.Screen name="Register">
-                                {(drawerProps) => <Register drawerProps={drawerProps} register={(email, pass) => this.register(email, pass)} error={this.state.registerError} />}
+                                {(drawerProps) => <Register drawerProps={drawerProps} register={(email, userName, pass) => this.register(email, userName, pass)} error={this.state.registerError} />}
                             </Drawer.Screen> 
                         </>
                     ) : (

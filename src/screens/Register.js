@@ -5,8 +5,8 @@ export default class Register extends Component {
         super(props)
         this.state={
             email:'',
+            userName: '',
             pass:'',
-            // Agregar nombre de usuario al registrar
         }
     }
 
@@ -16,19 +16,26 @@ export default class Register extends Component {
                 <TextInput
                     style={styles.input}
                     onChangeText={(text)=>this.setState({email: text})}
-                    placeholder='email'
-                    keyboardType='email-address'/>
+                    placeholder='Email'
+                    keyboardType='email-address'
+                />
+                <TextInput
+                    style={styles.input}
+                    onChangeText={(text)=>this.setState({userName: text})}
+                    placeholder='User Name'
+                    keyboardType='default'
+                />
                 <TextInput
                     style={styles.input}
                     onChangeText={(text)=>this.setState({pass: text})}
-                    placeholder='password'
+                    placeholder='Password'
                     keyboardType='email-address'
                     secureTextEntry={true}
                 />
                 {
                     this.props.error ? <Text>{this.props.error.message}</Text> : null
                 }
-                <TouchableOpacity style={styles.button} onPress={() => this.props.register(this.state.email, this.state.pass)}>
+                <TouchableOpacity style={styles.button} onPress={() => this.props.register(this.state.email, this.state.userName, this.state.pass)}>
                     <Text style={styles.textButton}>Registrarse</Text>    
                 </TouchableOpacity>
                 
