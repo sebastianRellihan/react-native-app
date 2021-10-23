@@ -7,14 +7,8 @@ export default class Login extends Component {
         this.state={
             email:'',
             pass:'',
-            error:'',
         }
     }
-
-    // onSubmit(){
-    //     console.log(`El email ingresado es: ${this.state.email}`);
-    //     console.log(`La contraseña ingresada es: ${this.state.pass}`);
-    // }
 
     render() {
         return (
@@ -23,7 +17,8 @@ export default class Login extends Component {
                     style={styles.input}
                     onChangeText={(text)=>this.setState({email: text})}
                     placeholder='email'
-                    keyboardType='email-address'/>
+                    keyboardType='email-address'
+                />
                 <TextInput
                     style={styles.input}
                     onChangeText={(text)=>this.setState({pass: text})}
@@ -31,9 +26,19 @@ export default class Login extends Component {
                     keyboardType='email-address'
                     secureTextEntry={true}
                 />
-                <TouchableOpacity style={styles.button} onPress={()=>this.props.login(this.state.email, this.state.pass)}>
+                {
+                    this.props.error ? <Text>{this.props.error.message}</Text> : null
+                }
+                <TouchableOpacity style={styles.button} onPress={()=> this.props.login(this.state.email, this.state.pass)}>
                     <Text style={styles.textButton}>Ingresar</Text>    
                 </TouchableOpacity>
+
+                <Text>
+                    ¿No tenés una cuenta? 
+                    <TouchableOpacity onPress={() => this.props.drawerProps.navigation.navigate("Register")}>
+                        <Text> Registrate</Text>
+                    </TouchableOpacity>
+                </Text>
             </View>
         )
     }

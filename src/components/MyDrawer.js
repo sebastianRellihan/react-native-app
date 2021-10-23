@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
-import { Text, StyleSheet, View, ActivityIndicator } from 'react-native'
-import { createDrawerNavigator } from '@react-navigation/drawer'
+import React, { Component } from 'react';
+import { StyleSheet, ActivityIndicator } from 'react-native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { auth } from "../firebase/config";
 
 import Home from '../screens/Home'
@@ -11,13 +11,13 @@ import Register from '../screens/Register'
 const Drawer = createDrawerNavigator();
 
 export default class MyDrawer extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             isLoggedIn: false,
             isLoading: true,
-            registered: false,
-            error: '',
+            loginError: '',
+            registerError: '',
             user: {}
         }
     }
@@ -44,11 +44,10 @@ export default class MyDrawer extends Component {
         auth.createUserWithEmailAndPassword(email, pass)
             .then( res => {
                 console.log("registrado!");
-                this.setState({registered: true})
+                // Agregar nombre de usuario al registrar 
             })
             .catch(err => {
-                console.log(err)
-                this.setState({error: 'Fallo en el registro'})
+                this.setState({registerError: err})
             })
     }
 
@@ -59,8 +58,7 @@ export default class MyDrawer extends Component {
                 this.setState({isLoggedIn: true})
             })
             .catch( err => {
-                console.log(err);
-                this.setState({error: 'Credenciales invalidas'})   
+                this.setState({loginError: err})
             })
     }
 
@@ -78,11 +76,11 @@ export default class MyDrawer extends Component {
                     this.state.isLoggedIn == false ? (
                         <>
                             <Drawer.Screen name="Login">
-                                {() => <Login login={(email, pass) => this.login(email, pass)} />}
+                                {(drawerProps) => <Login drawerProps={drawerProps} login={(email, pass) => this.login(email, pass)} error={this.state.loginError} />}
                             </Drawer.Screen> 
 
                             <Drawer.Screen name="Register">
-                                {() => <Register register={(email, pass) => this.register(email, pass)} />}
+                                {(drawerProps) => <Register drawerProps={drawerProps} register={(email, pass) => this.register(email, pass)} error={this.state.registerError} />}
                             </Drawer.Screen> 
                         </>
                     ) : (

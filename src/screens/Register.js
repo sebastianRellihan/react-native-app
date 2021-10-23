@@ -1,20 +1,14 @@
 import React, { Component } from 'react'
 import {View, Text, TextInput, StyleSheet, TouchableOpacity} from 'react-native';
-
-export default class Login extends Component {
+export default class Register extends Component {
     constructor(props){
         super(props)
         this.state={
             email:'',
             pass:'',
-            error:'',
+            // Agregar nombre de usuario al registrar
         }
     }
-
-    // onSubmit(){
-    //     console.log(`El email ingresado es: ${this.state.email}`);
-    //     console.log(`La contraseña ingresada es: ${this.state.pass}`);
-    // }
 
     render() {
         return (
@@ -31,9 +25,19 @@ export default class Login extends Component {
                     keyboardType='email-address'
                     secureTextEntry={true}
                 />
+                {
+                    this.props.error ? <Text>{this.props.error.message}</Text> : null
+                }
                 <TouchableOpacity style={styles.button} onPress={() => this.props.register(this.state.email, this.state.pass)}>
                     <Text style={styles.textButton}>Registrarse</Text>    
                 </TouchableOpacity>
+                
+                <Text>
+                    ¿Ya tenés una cuenta? 
+                    <TouchableOpacity onPress={() => this.props.drawerProps.navigation.navigate("Login")}>
+                        <Text> Inicia sesión</Text>
+                    </TouchableOpacity>
+                </Text>
             </View>
         )
     }
