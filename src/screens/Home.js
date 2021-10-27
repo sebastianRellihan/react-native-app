@@ -14,24 +14,22 @@ export default class Home extends Component {
     }
 
     componentDidMount() {
-        db.collection('posts').get() // En vez de get usar onSnapshot
-            .then(response => {
-                let posts = this.state.posts;
-
-                response.forEach(post => {
-                    posts.push(post.data());
-                })
-
-                this.setState({
-                    posts,
-                    isLoading: false
+        db.collection('posts').orderBy('created_at', 'desc').onSnapshot( docs => {
+            console.log(docs);
+            let posts = [];
+            docs.forEach(doc => {
+                console.log('test');
+                posts.push({
+                    id: doc.id,
+                    data: doc.data(),
                 })
             })
-    }
 
-    like() {
-        // Falta implementar el update del doc de la colección al momento de likear
-        console.log('Like')
+            this.setState({
+                posts: posts,
+                isLoading: false
+            })
+        })
     }
 
     render() {
@@ -42,8 +40,8 @@ export default class Home extends Component {
             :
                 <FlatList 
                     data={this.state.posts}
-                    renderItem={({item}) => <Post postData={item} like={() => this.like()} />}
-                    keyExtractor={(item) => item.user.email}
+                    keyExtractor={(item) => item.id}
+                    renderItem={({item}) => <Post postData={item} />}
                 />
         )
     }
