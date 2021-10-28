@@ -19,13 +19,12 @@ export default class MyDrawer extends Component {
             isLoading: true,
             loginError: '',
             registerError: '',
-            user: {}
+            homeHeaderShown: true
         }
     }
 
     componentDidMount(){
         auth.onAuthStateChanged(user => {
-            console.log(user);
             if(user){
                 this.setState({
                     isLoggedIn: true, 
@@ -70,6 +69,13 @@ export default class MyDrawer extends Component {
         auth.signOut();
     }
 
+    hideHomeHeader(hide) {
+        console.log('hide: ', hide);
+        this.setState({
+            homeHeaderShown: hide
+        })
+    }
+
     render() {
         return (
             this.state.isLoading ? 
@@ -89,7 +95,9 @@ export default class MyDrawer extends Component {
                         </>
                     ) : (
                         <>
-                            <Drawer.Screen name="Home" component={Home} />
+                            <Drawer.Screen name="Home" options={ this.state.homeHeaderShown ? { headerShown: true } : { headerShown: false }} >
+                                {() => <Home hideHomeHeader={(hide) => this.hideHomeHeader(hide)}/>}
+                            </Drawer.Screen>
                             
                             <Drawer.Screen name="NewPost">
                                 {(drawerProps) => <NewPost drawerProps={drawerProps} user={this.state.user} />}

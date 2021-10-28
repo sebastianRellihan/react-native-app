@@ -1,8 +1,13 @@
 import React, { Component } from 'react'
 import { Text, StyleSheet, FlatList, ActivityIndicator } from 'react-native'
+import { createStackNavigator } from '@react-navigation/stack';
 import { db } from "../firebase/config";
 
+import Posts from '../components/Posts'
 import Post from '../components/Post'
+import Comments from '../components/Comments'
+
+const Stack = createStackNavigator();
 
 export default class Home extends Component {
     constructor(props) {
@@ -13,36 +18,16 @@ export default class Home extends Component {
         }
     }
 
-    componentDidMount() {
-        db.collection('posts').orderBy('created_at', 'desc').onSnapshot( docs => {
-            console.log(docs);
-            let posts = [];
-            docs.forEach(doc => {
-                console.log('test');
-                posts.push({
-                    id: doc.id,
-                    data: doc.data(),
-                })
-            })
-
-            this.setState({
-                posts: posts,
-                isLoading: false
-            })
-        })
-    }
-
     render() {
-        console.log(this.state.posts);
         return (
-            this.state.isLoading ? 
-                <ActivityIndicator size="large" color="green" />
-            :
-                <FlatList 
-                    data={this.state.posts}
-                    keyExtractor={(item) => item.id}
-                    renderItem={({item}) => <Post postData={item} />}
-                />
+            <Stack.Navigator>
+              <Stack.Screen name="Posts" options={{ headerShown: false }}>
+                  {(drawerProps) => <Posts hideHomeHeader={this.props.hideHomeHeader} drawerProps={drawerProps}/>}
+              </Stack.Screen>
+              <Stack.Screen name="Comments" options={{ headerShown: true }}>
+                  {() => <Comments hideHomeHeader={this.props.hideHomeHeader}/>}
+              </Stack.Screen>
+            </Stack.Navigator>
         )
     }
 }

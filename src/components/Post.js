@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import { Text, StyleSheet, View, TouchableOpacity } from 'react-native'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faHeart } from '@fortawesome/free-solid-svg-icons'
+import { faHeart, faComment } from '@fortawesome/free-solid-svg-icons'
 import { auth, db } from '../firebase/config'
+import { createStackNavigator } from '@react-navigation/stack';
 import firebase from 'firebase'
+const Stack = createStackNavigator();
 
 export default class Post extends Component {
     constructor(props) {
@@ -70,6 +72,12 @@ export default class Post extends Component {
                             <FontAwesomeIcon icon={ faHeart } />
                         </TouchableOpacity>
                 }
+                <TouchableOpacity onPress={() => {
+                    this.props.navigation.navigation.navigate('Comments')
+                    this.props.hideHomeHeader(false);
+                }}>
+                    <FontAwesomeIcon icon={ faComment } />
+                </TouchableOpacity>
             </View>
         )
     }
