@@ -41,7 +41,6 @@ export default class MyDrawer extends Component {
     }
 
     register(email, userName, pass) {
-        console.log(pass);
         auth.createUserWithEmailAndPassword(email, pass)
             .then( res => {
                 res.user.updateProfile({
@@ -70,7 +69,6 @@ export default class MyDrawer extends Component {
     }
 
     hideHomeHeader(hide) {
-        console.log('hide: ', hide);
         this.setState({
             homeHeaderShown: hide
         })

@@ -21,12 +21,12 @@ export default class Home extends Component {
     render() {
         return (
             <Stack.Navigator>
-              <Stack.Screen name="Posts" options={{ headerShown: false }}>
-                  {(drawerProps) => <Posts hideHomeHeader={this.props.hideHomeHeader} drawerProps={drawerProps}/>}
-              </Stack.Screen>
-              <Stack.Screen name="Comments" options={{ headerShown: true }}>
-                  {() => <Comments hideHomeHeader={this.props.hideHomeHeader}/>}
-              </Stack.Screen>
+                <Stack.Screen name="Posts" options={{ headerShown: false }}>
+                    {(stackProps) => <Posts hideHomeHeader={this.props.hideHomeHeader} stackProps={stackProps}/>}
+                </Stack.Screen>
+                <Stack.Screen name="Comments" options={{ headerShown: true }}>
+                    {(stackProps) => <Comments hideHomeHeader={this.props.hideHomeHeader} stackProps={stackProps}/>}
+                </Stack.Screen>
             </Stack.Navigator>
         )
     }

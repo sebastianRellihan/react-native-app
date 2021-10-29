@@ -12,7 +12,7 @@ export default class Profile extends Component {
         return (
             <View>
                 <Text>Email registrado: {this.props.user.email}</Text>
-                <Text>Email registrado: {this.props.user.metadata.lastSignInTime}</Text>
+                <Text>Fecha de último login: {this.props.user.metadata.lastSignInTime}</Text>
                 <TouchableOpacity style={styles.button} onPress={this.props.logout}>
                     <Text style={styles.textButton}>Cerrar sesión</Text>    
                 </TouchableOpacity>

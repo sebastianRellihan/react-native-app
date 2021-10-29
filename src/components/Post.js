@@ -12,6 +12,7 @@ export default class Post extends Component {
         super(props);
         this.state = {
             likes: 0,
+            comments: 0,
             liked: false,
         }
     }
@@ -26,6 +27,11 @@ export default class Post extends Component {
                     liked: true,
                 })  
             }
+        }
+        if (this.props.postData.data.comments) {
+            this.setState({
+                comments: this.props.postData.data.comments.length
+            })
         }
     }
 
@@ -72,8 +78,9 @@ export default class Post extends Component {
                             <FontAwesomeIcon icon={ faHeart } />
                         </TouchableOpacity>
                 }
+                <Text>Comentarios: {this.state.comments}</Text>
                 <TouchableOpacity onPress={() => {
-                    this.props.navigation.navigation.navigate('Comments')
+                    this.props.navigation.navigation.navigate('Comments', {postData: this.props.postData})
                     this.props.hideHomeHeader(false);
                 }}>
                     <FontAwesomeIcon icon={ faComment } />

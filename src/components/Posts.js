@@ -14,11 +14,13 @@ export default class Posts extends Component {
     }
 
     componentDidMount() {
+        this.getPosts()
+    }
+
+    getPosts() {
         db.collection('posts').orderBy('created_at', 'desc').onSnapshot( docs => {
-            console.log(docs);
             let posts = [];
             docs.forEach(doc => {
-                console.log('test');
                 posts.push({
                     id: doc.id,
                     data: doc.data(),
@@ -40,7 +42,7 @@ export default class Posts extends Component {
                 <FlatList 
                     data={this.state.posts}
                     keyExtractor={(item) => item.id}
-                    renderItem={({item}) => <Post postData={item} navigation={this.props.drawerProps} hideHomeHeader={this.props.hideHomeHeader}/>}
+                    renderItem={({item}) => <Post postData={item} navigation={this.props.stackProps} hideHomeHeader={this.props.hideHomeHeader}/>}
                 />
         )
     }

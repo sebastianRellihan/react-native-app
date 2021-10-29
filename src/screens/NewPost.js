@@ -20,6 +20,7 @@ export default class NewPost extends Component {
                 userName: this.props.user.displayName
             }, 
             likes: [],
+            comments: [],
             created_at: Date.now()
         })
             .then(() => {
@@ -31,7 +32,6 @@ export default class NewPost extends Component {
     }
 
     render() {
-        console.log(this.props);
         return (
             <View style={styles.formContainer}>
                 <TextInput 
