@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, StyleSheet, View, TouchableOpacity } from 'react-native'
+import { Text, StyleSheet, View, TouchableOpacity, Image } from 'react-native'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faHeart, faComment } from '@fortawesome/free-solid-svg-icons'
 import { auth, db } from '../firebase/config'
@@ -65,7 +65,10 @@ export default class Post extends Component {
         return (
             <View style={styles.post}>
                 <Text>Usuario: {this.props.postData.data.user.userName}</Text>
-                <Text>Título: {this.props.postData.data.title}</Text>
+                <Image 
+                    style={styles.image}
+                    source={{uri: this.props.postData.data.photo}}
+                />
                 <Text>Descripción: {this.props.postData.data.description}</Text>
                 <Text>likes: {this.state.likes}</Text>
                 {
@@ -91,7 +94,13 @@ export default class Post extends Component {
 }
 
 const styles = StyleSheet.create({
+    image: {
+        width: '90%',
+        height: 200
+    },  
     post: {
+        flex: 1,
+        alignItems: 'center',
         marginBottom: 10,
         marginTop: 10
     },

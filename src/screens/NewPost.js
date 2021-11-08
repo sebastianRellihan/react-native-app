@@ -2,12 +2,16 @@ import React, { Component } from 'react'
 import { TextInput, TouchableOpacity, Text, StyleSheet, View } from 'react-native'
 import { db } from "../firebase/config";
 
+import TakePicture from '../components/TakePicture'
+
 export default class NewPost extends Component {
     constructor(props) {
         super(props);
         this.state = {
             title: '',
-            description: ''
+            description: '',
+            photoUrl: '',
+            showCamera: true
         }
     }
 
@@ -21,7 +25,8 @@ export default class NewPost extends Component {
             }, 
             likes: [],
             comments: [],
-            created_at: Date.now()
+            created_at: Date.now(),
+            photo: this.state.photoUrl
         })
             .then(() => {
                 this.props.drawerProps.navigation.navigate('Home')
@@ -31,27 +36,37 @@ export default class NewPost extends Component {
             })
     }
 
+    onImageUpload(url) {
+        this.setState({
+            photoUrl: url,
+            showCamera: false
+        })
+    }
+
     render() {
         return (
-            <View style={styles.formContainer}>
-                <TextInput 
-                    style={styles.input}
-                    onChangeText={(text) => this.setState({title: text})}
-                    placeholder='Title'
-                    keyboardType='default'
-                />
-                <TextInput 
-                    style={styles.input}
-                    onChangeText={(text) => this.setState({description: text})}
-                    placeholder='Description'
-                    keyboardType='default'
-                    multiline={true}
-                />
-                
-                <TouchableOpacity style={styles.button} onPress={()=> this.post()}>
-                    <Text style={styles.textButton}>Post</Text>    
-                </TouchableOpacity>
-            </View>
+            this.state.showCamera ? 
+                <TakePicture onImageUpload={ (url) => this.onImageUpload(url) }/>
+            :
+                <View style={styles.formContainer}>
+                    <TextInput 
+                        style={styles.input}
+                        onChangeText={(text) => this.setState({title: text})}
+                        placeholder='Title'
+                        keyboardType='default'
+                    />
+                    <TextInput 
+                        style={styles.input}
+                        onChangeText={(text) => this.setState({description: text})}
+                        placeholder='Description'
+                        keyboardType='default'
+                        multiline={true}
+                    />
+                    
+                    <TouchableOpacity style={styles.button} onPress={()=> this.post()}>
+                        <Text style={styles.textButton}>Post</Text>    
+                    </TouchableOpacity>
+                </View>
         )
     }
 }
